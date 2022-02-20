@@ -1,4 +1,4 @@
-# Wafer map pattern classification Combining Convolutioal and Handcrafted Features 
+# Wafer map pattern classification by Combining Convolutioal and Handcrafted Features 
 
 Wafer map defect pattern classification with Stacking Ensemble of Convolutioal and Handcrafted Features 
 
