@@ -6,7 +6,7 @@ Wafer map defect pattern classification with Stacking Ensemble of Convolutioal a
 
 ### Convolutional Neural Network (CNN)
 
-![](https://github.com/DMkelllog/Wafer_map_pattern_classification_CNN/blob/main/CNN%20flow.PNG?raw=true)
+![](https://github.com/DMkelllog/wafermap_CNN/blob/main/CNN_flow.png?raw=true)
 
 * Input:    wafer map
   * resized to 64x64
@@ -24,7 +24,7 @@ Wafer map defect pattern classification with Stacking Ensemble of Convolutioal a
 
 ### Stacking Ensemble
 
-![](https://github.com/DMkelllog/Wafer_map_pattern_classification_CNN/blob/main/CNN%20flow.PNG?raw=true)
+![](https://github.com/DMkelllog/wafermap_Stacking/blob/main/Stacking_flow.png?raw=true)
 
 * Input:    predicted score of CNN and MFE
 * Output: predicted class
