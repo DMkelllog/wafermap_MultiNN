@@ -24,10 +24,9 @@ def build_MFE(args):
 
     with open('../data/X_MFE.pickle', 'rb') as f:
         X_MFE = pickle.load(f)
-        X_MFE = X_MFE.astype(np.float32)
 
     with open('../data/y.pickle', 'rb') as f:
-        y = pickle.load(f).astype(np.int64)
+        y = pickle.load(f)
 
     X_MFE_trainval, X_MFE_test, y_trainval, y_test = train_test_split(X_MFE, y, test_size=10000, random_state=args.seed, stratify=y)
     X_MFE_trainval, y_trainval = X_MFE_trainval[:args.train_size], y_trainval[:args.train_size]

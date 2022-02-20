@@ -20,13 +20,12 @@ es_patience = 20
 
 def build_CNN(args):
 
-    with open('../data/X_CNN_64.pickle', 'rb') as f:
+    with open('../data/X_CNN.pickle', 'rb') as f:
         X_CNN = pickle.load(f)
-        X_CNN = X_CNN.astype(np.float32)
-        X_CNN = X_CNN.transpose(0, 3, 1, 2)
+        X_CNN = (np.expand_dims(X_CNN, 3) / 255).transpose(0, 3, 1, 2)
 
     with open('../data/y.pickle', 'rb') as f:
-        y = pickle.load(f).astype(np.int64)
+        y = pickle.load(f)
 
     X_CNN_trainval, X_CNN_test, y_trainval, y_test = train_test_split(X_CNN, y, test_size=10000, random_state=args.seed, stratify=y)
     X_CNN_trainval, y_trainval = X_CNN_trainval[:args.train_size], y_trainval[:args.train_size]
