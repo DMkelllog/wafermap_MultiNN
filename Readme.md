@@ -1,6 +1,6 @@
 # Wafer map pattern classification by Combining Convolutioal and Handcrafted Features 
 
-Wafer map defect pattern classification with Stacking Ensemble of Convolutioal and Handcrafted Features 
+Wafer map defect pattern classification with Multi-Input Neural Network of Convolutioal and Handcrafted Features 
 
 Proposed by H.Kang and S.Kang
 
@@ -8,7 +8,7 @@ Hyungu Kang, Seokho Kang* (2021), "A stacking ensemble classifier with handcraft
 
 ## Methodology
 
-### Multi-input neural network (CNN)
+### Multi-input neural network (MultiNN)
 
 ![](https://github.com/DMkelllog/WMPC_MultiNN/blob/main/MultiNN%20flow?raw=true)
 
