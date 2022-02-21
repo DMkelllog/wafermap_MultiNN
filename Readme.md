@@ -41,6 +41,7 @@ Hyungu Kang, Seokho Kang* (2021), "A stacking ensemble classifier with handcraft
 * Pandas 1.3.2
 * Scikit-learn 1.0.2
 * OpenCV-python 4.5.3
+* Scikit-image 0.18.3
 
 ## References
 
