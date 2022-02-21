@@ -44,8 +44,6 @@ Hyungu Kang, Seokho Kang* (2021), "A stacking ensemble classifier with handcraft
 
   * 9 defect classes (Center, Donut, Edge-ring, Edge-local, Local, Random, Near-full, Scratch, None)
 
-    
-
   * provided by MIR Lab (http://mirlab.org/dataset/public/)
 
   * .pkl file downloaded from Kaggle dataset (https://www.kaggle.com/qingyi/wm811k-wafer-map)

@@ -19,26 +19,28 @@ def softmax(x):
 
 class CustomDataset(Dataset):
     
-    def __init__(self, X, y, transform=None):
-        self.X = X
+    def __init__(self, X_1, X_2, y, transform=None):
+        self.X_1 = X_1
+        self.X_2 = X_2
         self.y = y
         self.transform = transform
 
     def __len__(self):
-        return len(self.X)
+        return len(self.X_1)
 
     def __getitem__(self, idx):
-        x = self.X[idx]
+        X_1 = self.X_1[idx]
+        X_2 = self.X_2[idx]
         y = self.y[idx]
 
         if self.transform:
-            x = self.transform(x)
-        return x, y
+            X_1 = self.transform(X_1)
+        return X_1, X_2, y
 
 
-class CNN(nn.Module):
+class MultiNN(nn.Module):
     def __init__(self, args, pretrained=True):
-        super(CNN, self).__init__()
+        super(MultiNN, self).__init__()
         self.f = []
         if args.bn:
             if args.vgg==13: architecture= vgg13_bn(pretrained=pretrained)
@@ -51,11 +53,14 @@ class CNN(nn.Module):
         
         architecture.features[0] = nn.Conv2d(1, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
         architecture.avgpool = nn.AdaptiveAvgPool2d(output_size=(1,1))
-        architecture.classifier = nn.Sequential(nn.Dropout(args.dropout), nn.Linear(512, 9))
-        self.cnn = architecture
+        self.cnn = nn.Sequential(architecture.features, architecture.avgpool, nn.Flatten())
+        self.classifier = nn.Sequential(nn.Dropout(args.dropout), nn.Linear(512+59, 9))
 
-    def forward(self, x):
-        return self.cnn(x)
+    def forward(self, x_1, x_2):
+        conv_features = self.cnn(x_1)
+        x = torch.cat((conv_features, x_2), 1)
+        x = self.classifier(x)
+        return x
 
 
 class FNN(nn.Module):
@@ -86,30 +91,30 @@ def training(model, dataloader_train, dataloader_val, mode, args):
 
         model.train()
         total_loss, total_num = 0, 0
-        for x, y in dataloader_train:
-            x, y = x.cuda(), y.cuda()
+        for x_1, x_2, y in dataloader_train:
+            x_1, x_2, y = x_1.cuda()-0.5, x_2.cuda(), y.cuda()
             
-            y_pred = model(x)
+            y_pred = model(x_1, x_2)
             loss = loss_fn(y_pred, y)
 
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
-            total_loss += loss.item()
+            total_loss += loss.item() * y.size(0)
             total_num += y.size(0)
         train_loss = total_loss / total_num
 
         model.eval()
         total_loss, total_num = 0, 0
         with torch.no_grad():
-            for x, y in dataloader_val:
-                x, y = x.cuda(), y.cuda()
-
-                y_pred = model(x)
+            for x_1, x_2, y in dataloader_val:
+                x_1, x_2, y = x_1.cuda()-0.5, x_2.cuda(), y.cuda()
+                
+                y_pred = model(x_1, x_2)
                 loss = loss_fn(y_pred, y)
 
-                total_loss += loss.item()
+                total_loss += loss.item() * y.size(0)
                 total_num += y.size(0)
             val_loss = total_loss / total_num
         if args.print_freq == 0: pass
@@ -142,9 +147,10 @@ def inference(model, dataloader_test, y_test, y_set, args):
     model.eval()
     y_hat = []
     with torch.no_grad():
-        for x, y in dataloader_test:
-            x, y = x.cuda(), y.cuda()
-            y_pred = model(x)
+        for x_1, x_2, y in dataloader_test:
+            x_1, x_2, y = x_1.cuda()-0.5, x_2.cuda(), y.cuda()
+            
+            y_pred = model(x_1, x_2)
             y_hat.append(y_pred.cpu().numpy())
     y_hat = np.vstack(y_hat)
     f1_macro = f1_score(y_test, y_hat.argmax(1), average='macro', labels=y_set)
