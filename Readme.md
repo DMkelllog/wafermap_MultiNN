@@ -8,31 +8,15 @@ Hyungu Kang, Seokho Kang* (2021), "A stacking ensemble classifier with handcraft
 
 ## Methodology
 
-### Convolutional Neural Network (CNN)
+### Multi-input neural network (CNN)
 
-![](https://github.com/DMkelllog/wafermap_CNN/blob/main/CNN_flow.png?raw=true)
+![](https://github.com/DMkelllog/WMPC_MultiNN/blob/main/MultiNN%20flow?raw=true)
 
 * Input:    wafer map
   * resized to 64x64
 * Output: predicted score
 * Model:  CNN (based on VGG16)
-
-### Manual Feature Extraction (MFE)
-
-![](https://github.com/DMkelllog/Wafer_map_pattern_classification_CNN/blob/main/CNN%20flow.PNG?raw=true)
-
-* Input:    handcrafted features of wafer map
-  * 59-dim
-* Output: predicted score
-* Model:  FNN (2-layer MLP)
-
-### Stacking Ensemble
-
-![](https://github.com/DMkelllog/wafermap_Stacking/blob/main/Stacking_flow.png?raw=true)
-
-* Input:    predicted score of CNN and MFE
-* Output: predicted class
-* Model:  MLR (Multi-response Linear Regression)
+* handcrafted features (59-dim) are concatenated to CNN features (512-dim)
 
 
 ## Data
